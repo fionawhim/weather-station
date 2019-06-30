@@ -1,0 +1,15 @@
+[Unit]
+Description=Weather Station
+After=network.target
+
+[Service]
+ExecStart=
+WorkingDirectory=
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+RestartSec=5min
+
+[Install]
+WantedBy=multi-user.target
