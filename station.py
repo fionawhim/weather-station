@@ -316,17 +316,30 @@ def show_forecast(d):
   start = datetime(cur_time.year, cur_time.month, cur_time.day, tzinfo=EASTERN)
   curr_hour = datetime.now(EASTERN).hour
 
+  pixel_pos = 23 - curr_hour
+  count = 0
+
+  found_now = False
+
   for forecast in d["hours"]:
     hour_date = datetime.utcfromtimestamp(forecast["time"]).replace(tzinfo=tzutc()).astimezone(EASTERN)
     hour = hour_date.hour
 
-    if hour >= curr_hour:
-      color = ICON_COLORS[convert_icon(forecast["icon"])]
-      trinket_call(SET_PIXEL_CMD, [23 - hour, color[0], color[1], color[2]])
+    if hour < curr_hour and not found_now:
+      continue
 
-    if hour == 23:
+    found_now = True
+
+    color = ICON_COLORS[convert_icon(forecast["icon"])]
+    trinket_call(SET_PIXEL_CMD, [pixel_pos, color[0], color[1], color[2]])
+    pixel_pos = pixel_pos - 1
+    if pixel_pos < 0:
+      pixel_pos = pixel_pos + 24
+    count = count + 1
+    
+    if count == 21:
       break
-  
+
   trinket_call(SHOW_PIXELS_CMD)
 
 last_sync = datetime.now(EASTERN) - timedelta(minutes=60)
