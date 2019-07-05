@@ -439,7 +439,7 @@ while True:
 
         if cur_time.hour > last_hour_signal.hour or not started:
             logging.info("Top of the hour or startup. Cycling icons.")
-            # cycle_icons()
+            cycle_icons()
             last_hour_signal = cur_time
             started = True
 
