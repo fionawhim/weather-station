@@ -424,12 +424,13 @@ while True:
 
         # Load new data every 3 minutes
         if cur_time > last_sync + timedelta(minutes=3):
+            # Keeps us from requesting in a tight loop if we’re getting errors
+            last_sync = cur_time
+
             logging.info("Loading remote data...")
             response_bytes = urllib.request.urlopen(API_URL).read()
             d = json.loads(response_bytes.decode("utf-8"))
             logging.info("...success")
-
-            last_sync = cur_time
 
             show_temperature(d)
             show_conditions(d)

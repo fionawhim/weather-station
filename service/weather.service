@@ -3,8 +3,8 @@ Description=Weather Station
 After=network.target
 
 [Service]
-ExecStart=
-WorkingDirectory=
+ExecStart=/usr/bin/python3 station.py
+WorkingDirectory=/home/pi/weather-station
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
